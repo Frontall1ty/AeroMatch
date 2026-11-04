@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { API_BASE_URL } from "@/lib/api/client";
 
 type Status = "checking" | "reachable" | "unreachable";
 
@@ -10,7 +9,7 @@ export default function ApiStatus() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch(`${API_BASE_URL}/actuator/health`, { signal: controller.signal })
+    fetch("/actuator/health", { signal: controller.signal })
       .then((res) => setStatus(res.ok ? "reachable" : "unreachable"))
       .catch((err: unknown) => {
         if (!(err instanceof DOMException && err.name === "AbortError")) {

@@ -5,7 +5,7 @@ export default function Home() {
     <main className="landing">
       <h1>AeroMatch</h1>
       <p className="subtitle">Air cargo quote and booking coordination</p>
-      <ApiStatus />
+      {process.env.NODE_ENV === "development" && <ApiStatus />}
     </main>
   );
 }
