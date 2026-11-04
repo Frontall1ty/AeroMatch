@@ -18,7 +18,7 @@ Review rules: items touching authentication, authorization, tenant scope, or boo
 - **Description:** **[FACT]** `spring-boot-starter-security` is not a dependency; all endpoints, including actuator and Swagger, are open. **[FACT]** The catch-all `Exception` handler would turn future 401/403 into 500. Add Security with deny-by-default, an explicit allow-list (health only), 401/403 handlers, password encoder.
 - **Dependencies:** TB-001.
 - **Acceptance criteria:** unauthenticated request to any non-allow-listed path returns 401; forbidden returns 403 (never 500); tests prove it; security-reviewer approves; `mvn verify` green.
-- **Status:** Approved by human (2026-11-04, D-013/D-014)
+- **Status:** In progress (Approved by human 2026-11-04). Implemented and committed locally (`0859fdc`, `4a3e742`); local `mvn verify` 102 run, 0 failed, 6 skipped (PostgresBootTest, CI only). Not Done until CI is green and a push is approved. Real login arrives with TB-004
 
 ## TB-003 – Tenant (company) isolation foundation and IDOR test harness
 - **Priority:** 3 (High)
@@ -39,7 +39,7 @@ Review rules: items touching authentication, authorization, tenant scope, or boo
 - **Description:** **[FACT]** Swagger UI and `/api/v1/openapi` are enabled in every profile; `PostgresBootTest` asserts OpenAPI is served. **[FACT]** CORS is configured only for actuator (`management.endpoints.web.cors`), not `/api/**`. Add a `prod` profile that disables Swagger/OpenAPI (or requires admin auth), configure CORS for `/api/**` from an explicit origin list per environment, and adjust tests.
 - **Dependencies:** TB-002 (CORS credentials depend on TB-001).
 - **Acceptance criteria:** in `prod` profile Swagger/OpenAPI return 404 or 401; dev profile keeps them; CORS allows only configured origins (no `*` with credentials); tests for both profiles.
-- **Status:** Approved by human (2026-11-04, D-013/D-014). Scope per D-012: single-origin, so CORS for `/api/**` is removed rather than configured; Swagger/OpenAPI disabled in `prod`
+- **Status:** In progress (Approved by human 2026-11-04). Frontend slice (`2fe3414`) and backend slice implemented; local `mvn verify` 109 run, 0 failed, 6 skipped (PostgresBootTest, CI only). Not Done until CI is green and a push is approved. Deployment pieces (Caddy config, forwarded headers behind a real proxy) are not part of this item and unverified
 
 ## TB-006 – Provider-only booking confirmation: domain rules and tests
 - **Priority:** 6 (High, invariant)
