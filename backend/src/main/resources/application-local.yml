@@ -4,3 +4,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/aeromatch
     username: aeromatch
     password: aeromatch_dev
+
+aeromatch:
+  security:
+    cookie-secure: false   # plain http://localhost in development
+    api-docs-public: true  # Swagger UI / OpenAPI for local development only (TB-005)

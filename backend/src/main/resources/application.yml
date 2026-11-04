@@ -15,6 +15,12 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+  session:
+    # Server-side sessions in PostgreSQL (ADR-007). Schema comes from Flyway V2, never auto-created.
+    timeout: 30m              # idle timeout (Spring Session maxInactiveInterval); absolute 12 h is enforced by AbsoluteSessionTimeoutFilter
+    jdbc:
+      initialize-schema: never
+      cleanup-cron: "0 */10 * * * *"   # housekeeping only; expiry is NEVER enforced by this job
 
 server:
   port: 8080
@@ -37,3 +43,24 @@ springdoc:
     path: /api/v1/openapi
   swagger-ui:
     path: /api/v1/swagger-ui.html
+
+aeromatch:
+  security:
+    # Exact origins allowed to send unsafe (POST/PUT/PATCH/DELETE) requests. Dev default only.
+    allowed-origins: ${AEROMATCH_ALLOWED_ORIGINS:http://localhost:3000}
+    # Secure flag for the session and XSRF cookies. Must be true except in the local profile.
+    cookie-secure: ${AEROMATCH_COOKIE_SECURE:true}
+    # TODO(TB-005): fail-closed (false). Only the local profile opens springdoc/Swagger; TB-005 makes it profile-dependent.
+    api-docs-public: ${AEROMATCH_API_DOCS_PUBLIC:false}
+    # CSRF cookie name; prod may use __Host-XSRF-TOKEN (requires cookie-secure=true, enforced at startup).
+    csrf-cookie-name: ${AEROMATCH_CSRF_COOKIE_NAME:XSRF-TOKEN}
+    session:
+      cookie-name: ${AEROMATCH_SESSION_COOKIE_NAME:AMSESSION}   # prod may use __Host-AMSESSION (requires Secure, Path=/, no Domain)
+      absolute-timeout: 12h
+    password:
+      # Argon2id. Defaults follow ADR-007 (m=64 MiB, t=3, p=1). MUST be benchmarked on the target host before production.
+      memory-kib: 65536
+      iterations: 3
+      parallelism: 1
+      salt-length: 16
+      hash-length: 32
