@@ -25,14 +25,14 @@ Review rules: items touching authentication, authorization, tenant scope, or boo
 - **Description:** **[FACT]** Nothing resolves a company from the current user; no tenant-scope tests exist. Provide a company-scope mechanism usable by every repository/service, plus a reusable test harness proving a user of company A cannot read or modify company B data by guessing IDs.
 - **Dependencies:** TB-001, TB-002, TB-004 (identity schema).
 - **Acceptance criteria:** cross-company read/list/update returns 404/403 in tests for the first protected resource; harness reusable for later modules; list endpoints always company-scoped; architect and security-reviewer approve.
-- **Status:** Blocked (TB-002 and TB-004 first; owner's unblock rule covers only U-011/12/16/19, so U-014 and U-015 are still unresolved: **[DECISION NEEDED]** whether they also gate this item)
+- **Status:** Blocked until TB-004 core is done. Then not yet `Approved by human`; owner asked to continue with it after its dependencies are satisfied
 
 ## TB-004 – Identity and company schema with RBAC
 - **Priority:** 4 (High)
 - **Description:** **[FACT]** Migration is `SELECT 1;`; no `users`, `companies`, `company_members`, `refresh_tokens`, `audit_logs`. Create via Flyway: UUID keys, UTC timestamps, unique constraints, roles PLATFORM_ADMIN, COMPANY_ADMIN, FORWARDER_OPERATOR, SHIPPER_USER, AGENT_OPERATOR, VIEWER. Audit log for security-relevant changes.
 - **Dependencies:** TB-001; company types/roles from TB-007 (**[DECISION NEEDED]**).
 - **Acceptance criteria:** migration applies on PostgreSQL in CI (Testcontainers); Hibernate `validate` passes; constraint tests; no hard deletes of auditable records.
-- **Status:** Blocked (needs U-011 and U-014 PLATFORM_ADMIN model; owner's unblock rule listed U-011/12/16/19 only: **[DECISION NEEDED]** whether U-014 also gates this item)
+- **Status:** Approved by human, core scope only (2026-11-04, D-015). TB-004b (email verification, password reset, PLATFORM_ADMIN TOTP) is deferred and not approved
 
 ## TB-005 – Environment-specific OpenAPI/Swagger and CORS
 - **Priority:** 5 (Medium-High)
