@@ -1,0 +1,35 @@
+# Production profile. Activate with SPRING_PROFILES_ACTIVE=prod. Datasource comes from DB_URL / DB_USER / DB_PASSWORD.
+server:
+  # D-010: the Caddy reverse proxy MUST overwrite (not append to) X-Forwarded-* from clients, and port 8080 must NOT be
+  # reachable except through that proxy; otherwise clients could spoof their address/scheme.
+  forward-headers-strategy: framework
+
+spring:
+  web:
+    resources:
+      add-mappings: false   # API only: no static resources, so the swagger-ui webjar assets are not served either
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+aeromatch:
+  security:
+    api-docs-public: false
+    cookie-secure: true
+    csrf-cookie-name: __Host-XSRF-TOKEN
+    session:
+      cookie-name: __Host-AMSESSION
+
+management:
+  endpoints:
+    web:
+      discovery:
+        enabled: false      # no /actuator index page
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
