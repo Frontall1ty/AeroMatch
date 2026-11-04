@@ -16,11 +16,14 @@ Project subagents live in `.claude/agents/`:
 
 | Agent | Role | Edits files? |
 |---|---|---|
-| `software-architect` | Reviews major architectural decisions, module boundaries, data model, state machines | No |
-| `backend-developer` | Implements `backend/` tasks | Only assigned files in `backend/` |
-| `frontend-developer` | Implements `frontend/` tasks | Only assigned files in `frontend/` |
-| `qa-engineer` | Runs builds, tests, integration and acceptance checks; reports honestly | No |
-| `security-reviewer` | Reviews authn/authz, tenant isolation, documents, sensitive operations | No |
+| `software-architect` (Lead Architect) | Reviews major architectural decisions, module boundaries, data model, state machines | No |
+| `backend-developer` (Backend Engineer) | Implements `backend/` tasks | Only assigned files in `backend/` |
+| `frontend-developer` (Frontend Engineer) | Implements `frontend/` tasks | Only assigned files in `frontend/` |
+| `qa-engineer` (QA and Testing Engineer) | Runs builds, tests, integration and acceptance checks; reports honestly | No |
+| `security-reviewer` (Security Engineer) | Reviews authn/authz, tenant isolation, CORS/OpenAPI exposure, documents, sensitive operations | No |
+| `logistics-domain-analyst` (Logistics Domain Analyst) | Validates air-cargo rules, terminology, fields, workflows, open domain questions | No |
+
+Engineering management documents live in `docs/engineering/` (PROJECT_STATUS, PRODUCT_ROADMAP, TECHNICAL_BACKLOG, DECISION_LOG, TEST_REPORT, AGENT_WORK_LOG). Only the main session writes them. Air freight is the only MVP scope.
 
 Collaboration rules:
 1. The **main agent** coordinates, integrates, and makes final decisions. Subagents report to it only.
