@@ -11,14 +11,14 @@ Review rules: items touching authentication, authorization, tenant scope, or boo
 - **Description:** **[FACT]** The spec leaves JWT vs cookie session open ("session/JWT"); no ADR exists; the frontend client has no credentials/token handling. Produce a decision with options (HttpOnly cookie session + CSRF, or short-lived JWT + refresh), trade-offs for a Next.js frontend, and a recommendation.
 - **Dependencies:** none.
 - **Acceptance criteria:** ADR recorded in `DECISION_LOG.md` with the human's approval; covers token/session storage, refresh/logout, CSRF, CORS credentials, rate limiting; reviewed by architect and security-reviewer.
-- **Status:** Open. Decided by owner in ADR-007 and independently reviewed (2026-11-04); awaiting owner approval of the review recommendations before closing
+- **Status:** Done. Decided in ADR-007; owner approved the working decisions (D-013, 2026-11-04)
 
 ## TB-002 – Spring Security with deny-by-default and correct error mapping
 - **Priority:** 2 (High)
 - **Description:** **[FACT]** `spring-boot-starter-security` is not a dependency; all endpoints, including actuator and Swagger, are open. **[FACT]** The catch-all `Exception` handler would turn future 401/403 into 500. Add Security with deny-by-default, an explicit allow-list (health only), 401/403 handlers, password encoder.
 - **Dependencies:** TB-001.
 - **Acceptance criteria:** unauthenticated request to any non-allow-listed path returns 401; forbidden returns 403 (never 500); tests prove it; security-reviewer approves; `mvn verify` green.
-- **Status:** Open. Owner decisions U-011, U-012, U-016, U-019 recorded as D-009 to D-012 (2026-11-04); not yet `Approved by human`, so the scheduled task will not pick it up
+- **Status:** Approved by human (2026-11-04, D-013/D-014)
 
 ## TB-003 – Tenant (company) isolation foundation and IDOR test harness
 - **Priority:** 3 (High)
@@ -39,7 +39,7 @@ Review rules: items touching authentication, authorization, tenant scope, or boo
 - **Description:** **[FACT]** Swagger UI and `/api/v1/openapi` are enabled in every profile; `PostgresBootTest` asserts OpenAPI is served. **[FACT]** CORS is configured only for actuator (`management.endpoints.web.cors`), not `/api/**`. Add a `prod` profile that disables Swagger/OpenAPI (or requires admin auth), configure CORS for `/api/**` from an explicit origin list per environment, and adjust tests.
 - **Dependencies:** TB-002 (CORS credentials depend on TB-001).
 - **Acceptance criteria:** in `prod` profile Swagger/OpenAPI return 404 or 401; dev profile keeps them; CORS allows only configured origins (no `*` with credentials); tests for both profiles.
-- **Status:** Open. Owner decisions U-011, U-012, U-016, U-019 recorded as D-009 to D-012 (2026-11-04); not yet `Approved by human`, so the scheduled task will not pick it up
+- **Status:** Approved by human (2026-11-04, D-013/D-014). Scope per D-012: single-origin, so CORS for `/api/**` is removed rather than configured; Swagger/OpenAPI disabled in `prod`
 
 ## TB-006 – Provider-only booking confirmation: domain rules and tests
 - **Priority:** 6 (High, invariant)
