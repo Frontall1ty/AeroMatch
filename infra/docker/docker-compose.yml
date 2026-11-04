@@ -1,0 +1,23 @@
+# Local development stack: PostgreSQL only by default.
+# Run the backend with `mvn spring-boot:run` and the frontend with `npm run dev`.
+# Usage: docker compose -f infra/docker/docker-compose.yml --env-file .env up -d
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aeromatch-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-aeromatch}
+      POSTGRES_USER: ${POSTGRES_USER:-aeromatch}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aeromatch_dev}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - aeromatch-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aeromatch} -d ${POSTGRES_DB:-aeromatch}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  aeromatch-pgdata:

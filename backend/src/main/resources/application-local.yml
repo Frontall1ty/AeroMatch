@@ -1,0 +1,6 @@
+# Local development defaults. Activate with SPRING_PROFILES_ACTIVE=local
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/aeromatch
+    username: aeromatch
+    password: aeromatch_dev

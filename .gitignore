@@ -1,0 +1,27 @@
+# Java / Maven
+target/
+*.class
+
+# Node
+node_modules/
+.next/
+out/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+~$*
+
+# Tooling output
+graphify-out/
+
+# Claude local settings
+.claude/settings.local.json
