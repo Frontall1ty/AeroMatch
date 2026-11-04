@@ -20,6 +20,8 @@ Labels: **[FACT]** recorded decision · **[DECISION NEEDED]** unresolved · **[R
 | D-003 | Base config has no DB credential defaults; dev defaults only in `application-local.yml` | **[FACT]** Implemented |
 | D-004 | Postgres boot test uses Testcontainers, skipped without Docker, runs in CI | **[FACT]** Implemented |
 | D-005 | Project subagents defined in `.claude/agents/`; main session orchestrates; no two agents edit the same file concurrently | **[FACT]** Adopted |
+| D-006 | Development efficiency and verification policy (batching, minimal agents, targeted tests, optimization phase after MVP, one final audit); recorded in `CLAUDE.md` | **[FACT]** Stated by the project owner 2026-11-04 |
+| D-007 | Scheduled task works only on backlog items with status `Approved by human`; edits only on feature branches | **[FACT]** Implemented in the task prompt |
 
 ## Unresolved decisions
 | ID | Question | Options / notes | Needed before |

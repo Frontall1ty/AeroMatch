@@ -37,3 +37,11 @@ Collaboration rules:
 ## Local environment notes
 - `JAVA_HOME` on this machine points to a missing JDK 21; use `JAVA_HOME="C:/Program Files/Java/jdk-25"` (code targets Java 21).
 - Docker is not installed locally; Postgres-backed tests run in CI or after installing Docker.
+
+## Development efficiency and verification policy
+- **Batch work.** Group related tasks. No repo-wide re-audits after small changes; `docs/engineering/` and the existing audit are the source of truth; reinspect only files relevant to the task. Routine, reversible operations already authorized need no per-step approval.
+- **Agents.** Delegate only when specialist expertise helps; parallelize only independent tasks; none for trivial changes; exclusive file ownership; one consolidated review instead of overlapping ones.
+- **Testing.** Targeted tests while implementing; related integration tests at the end of each batch; full regression at major milestones. Never skip tests; do not rerun unchanged tests without a reason.
+- **Optimization.** No premature optimization during feature work. After the planned MVP, run a dedicated phase: architecture and maintainability, security and authorization, database queries and indexing, API and frontend performance, dependency and infrastructure hygiene, duplication. Security and data integrity are never postponed.
+- **Final verification.** One comprehensive audit after MVP and optimization: implemented functionality, defects, security, performance, test coverage and results, deployment readiness, remaining risks. Avoid repetitive reporting.
+- **Limits.** This does not relax: commit/push only with the user's go-ahead, security review for auth/tenant/booking changes, the human approval gate for backlog work, provider-only booking confirmation, air freight only.

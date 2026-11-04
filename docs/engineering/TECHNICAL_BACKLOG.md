@@ -1,7 +1,7 @@
 # AeroMatch – Technical Backlog
 
 Ranked by repository evidence (audit of commit `ff30c83`). Security and tenant isolation first. Air freight only. Labels: **[FACT]** / **[ASSUMPTION]** / **[DECISION NEEDED]** / **[RECOMMENDATION]**.
-Status values: `Open` · `Blocked` · `In progress` · `Done`. Nothing here is implemented yet. No item may start without human approval.
+Status values: `Open` · `Blocked` · `Approved by human` (written only by the human; the scheduled task works only on items with this status) · `In progress` · `Done`. Nothing here is implemented yet. No item may start without human approval.
 
 Review rules: items touching authentication, authorization, tenant scope, or booking transitions need `security-reviewer`; schema/state-machine/auth design needs `software-architect`; domain wording/fields need `logistics-domain-analyst`; every item needs `qa-engineer` verification before commit.
 
