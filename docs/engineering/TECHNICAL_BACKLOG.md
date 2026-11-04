@@ -11,35 +11,35 @@ Review rules: items touching authentication, authorization, tenant scope, or boo
 - **Description:** **[FACT]** The spec leaves JWT vs cookie session open ("session/JWT"); no ADR exists; the frontend client has no credentials/token handling. Produce a decision with options (HttpOnly cookie session + CSRF, or short-lived JWT + refresh), trade-offs for a Next.js frontend, and a recommendation.
 - **Dependencies:** none.
 - **Acceptance criteria:** ADR recorded in `DECISION_LOG.md` with the human's approval; covers token/session storage, refresh/logout, CSRF, CORS credentials, rate limiting; reviewed by architect and security-reviewer.
-- **Status:** Open (**[DECISION NEEDED]** by human)
+- **Status:** Open. Decided by owner in ADR-007 and independently reviewed (2026-11-04); awaiting owner approval of the review recommendations before closing
 
 ## TB-002 – Spring Security with deny-by-default and correct error mapping
 - **Priority:** 2 (High)
 - **Description:** **[FACT]** `spring-boot-starter-security` is not a dependency; all endpoints, including actuator and Swagger, are open. **[FACT]** The catch-all `Exception` handler would turn future 401/403 into 500. Add Security with deny-by-default, an explicit allow-list (health only), 401/403 handlers, password encoder.
 - **Dependencies:** TB-001.
 - **Acceptance criteria:** unauthenticated request to any non-allow-listed path returns 401; forbidden returns 403 (never 500); tests prove it; security-reviewer approves; `mvn verify` green.
-- **Status:** Blocked by TB-001
+- **Status:** Open. Owner decisions U-011, U-012, U-016, U-019 recorded as D-009 to D-012 (2026-11-04); not yet `Approved by human`, so the scheduled task will not pick it up
 
 ## TB-003 – Tenant (company) isolation foundation and IDOR test harness
 - **Priority:** 3 (High)
 - **Description:** **[FACT]** Nothing resolves a company from the current user; no tenant-scope tests exist. Provide a company-scope mechanism usable by every repository/service, plus a reusable test harness proving a user of company A cannot read or modify company B data by guessing IDs.
 - **Dependencies:** TB-001, TB-002, TB-004 (identity schema).
 - **Acceptance criteria:** cross-company read/list/update returns 404/403 in tests for the first protected resource; harness reusable for later modules; list endpoints always company-scoped; architect and security-reviewer approve.
-- **Status:** Blocked
+- **Status:** Blocked (TB-002 and TB-004 first; owner's unblock rule covers only U-011/12/16/19, so U-014 and U-015 are still unresolved: **[DECISION NEEDED]** whether they also gate this item)
 
 ## TB-004 – Identity and company schema with RBAC
 - **Priority:** 4 (High)
 - **Description:** **[FACT]** Migration is `SELECT 1;`; no `users`, `companies`, `company_members`, `refresh_tokens`, `audit_logs`. Create via Flyway: UUID keys, UTC timestamps, unique constraints, roles PLATFORM_ADMIN, COMPANY_ADMIN, FORWARDER_OPERATOR, SHIPPER_USER, AGENT_OPERATOR, VIEWER. Audit log for security-relevant changes.
 - **Dependencies:** TB-001; company types/roles from TB-007 (**[DECISION NEEDED]**).
 - **Acceptance criteria:** migration applies on PostgreSQL in CI (Testcontainers); Hibernate `validate` passes; constraint tests; no hard deletes of auditable records.
-- **Status:** Blocked
+- **Status:** Blocked (needs U-011 and U-014 PLATFORM_ADMIN model; owner's unblock rule listed U-011/12/16/19 only: **[DECISION NEEDED]** whether U-014 also gates this item)
 
 ## TB-005 – Environment-specific OpenAPI/Swagger and CORS
 - **Priority:** 5 (Medium-High)
 - **Description:** **[FACT]** Swagger UI and `/api/v1/openapi` are enabled in every profile; `PostgresBootTest` asserts OpenAPI is served. **[FACT]** CORS is configured only for actuator (`management.endpoints.web.cors`), not `/api/**`. Add a `prod` profile that disables Swagger/OpenAPI (or requires admin auth), configure CORS for `/api/**` from an explicit origin list per environment, and adjust tests.
 - **Dependencies:** TB-002 (CORS credentials depend on TB-001).
 - **Acceptance criteria:** in `prod` profile Swagger/OpenAPI return 404 or 401; dev profile keeps them; CORS allows only configured origins (no `*` with credentials); tests for both profiles.
-- **Status:** Open (partly blocked by TB-001 for credentials mode)
+- **Status:** Open. Owner decisions U-011, U-012, U-016, U-019 recorded as D-009 to D-012 (2026-11-04); not yet `Approved by human`, so the scheduled task will not pick it up
 
 ## TB-006 – Provider-only booking confirmation: domain rules and tests
 - **Priority:** 6 (High, invariant)
